@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:pennypath/providers/auth_provider.dart';
 import 'package:pennypath/providers/category_provider.dart';
 import 'package:pennypath/providers/expense_provider.dart';
-import 'package:pennypath/app_view.dart';
-import 'package:pennypath/screens/login/login_screen.dart';
+import 'package:pennypath/screens/splash_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
@@ -29,18 +30,22 @@ class MyApp extends StatelessWidget {
           update: (context, auth, previous) => ExpenseProvider(auth),
         ),
       ],
-      child: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          return MaterialApp(
-            title: 'PennyPath',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: auth.authState == AuthState.authenticated
-                ? const MyAppView()
-                : const LoginScreen(),
-          );
-        },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'PennyPath',
+        theme: ThemeData(
+          colorScheme: ColorScheme.light(
+            surface: const Color(0xFFF5F5F5),
+            onSurface: const Color(0xFF212121),
+            primary: const Color(0xFF0D47A1),
+            onPrimary: Colors.white,
+            secondary: const Color(0xFFFF6D00),
+            tertiary: const Color(0xFF00BFA5),
+            outline: const Color(0xFFBDBDBD),
+          ),
+          textTheme: GoogleFonts.latoTextTheme(),
+        ),
+        home: const SplashScreen(),
       ),
     );
   }

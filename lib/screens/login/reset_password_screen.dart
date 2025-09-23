@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/providers/auth_provider.dart';
 
@@ -27,93 +26,111 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.onSurface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.onPrimary),
+        iconTheme: IconThemeData(color: colorScheme.onSurface),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: SvgPicture.asset(
-              'assets/piggy_bank.svg',
-              colorFilter: ColorFilter.mode(
-                colorScheme.tertiary.withOpacity(0.5),
-                BlendMode.srcIn,
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'New Password',
-                        labelStyle: TextStyle(color: colorScheme.onPrimary),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: colorScheme.outline),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: colorScheme.primary),
-                        ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/piggy_bank.png', height: 150),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'New Password',
+                      labelStyle: TextStyle(color: colorScheme.onSurface),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.outline),
                       ),
-                      style: TextStyle(color: colorScheme.onPrimary),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your new password';
-                        }
-                        return null;
-                      },
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.primary),
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    Consumer<AuthProvider>(
-                      builder: (context, auth, child) {
-                        if (auth.authState == AuthState.resetting) {
-                          return const CircularProgressIndicator();
-                        }
-                        return ElevatedButton(
-                          onPressed: _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                          ),
-                          child: Text(
-                            'Reset Password',
-                            style: TextStyle(color: colorScheme.onPrimary),
-                          ),
+                    style: TextStyle(color: colorScheme.onSurface),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your new password';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Confirm New Password',
+                      labelStyle: TextStyle(color: colorScheme.onSurface),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.outline),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.primary),
+                      ),
+                    ),
+                    style: TextStyle(color: colorScheme.onSurface),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your new password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Consumer<AuthProvider>(
+                    builder: (context, auth, child) {
+                      if (auth.authState == AuthState.resetting) {
+                        return const CircularProgressIndicator();
+                      }
+                      return ElevatedButton(
+                        onPressed: _submit,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.primary,
+                        ),
+                        child: Text(
+                          'Reset Password',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      );
+                    },
+                  ),
+                  Consumer<AuthProvider>(
+                    builder: (context, auth, child) {
+                      if (auth.authState == AuthState.resetError) {
+                        return Text(
+                          auth.errorMessage ?? 'An error occurred',
+                          style: TextStyle(color: colorScheme.error),
                         );
-                      },
-                    ),
-                    Consumer<AuthProvider>(
-                      builder: (context, auth, child) {
-                        if (auth.authState == AuthState.resetError) {
-                          return Text(
-                            auth.errorMessage ?? 'An error occurred',
-                            style: const TextStyle(color: Colors.red),
-                          );
-                        } else if (auth.authState == AuthState.resetSuccess) {
-                          return const Text(
-                            'Password has been reset',
-                            style: TextStyle(color: Colors.green),
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
-                  ],
-                ),
+                      } else if (auth.authState == AuthState.resetSuccess) {
+                        return Text(
+                          'Password has been reset',
+                          style: TextStyle(color: colorScheme.secondary),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

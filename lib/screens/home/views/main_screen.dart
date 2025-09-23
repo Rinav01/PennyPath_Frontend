@@ -5,6 +5,7 @@ import 'package:pennypath/providers/expense_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -272,7 +273,7 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(height: 20),
               Expanded(
                 child: expenseProvider.isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(child: Lottie.asset('assets/Rupee Coin.json'))
                     : expenseProvider.errorMessage != null
                         ? Center(child: Text(expenseProvider.errorMessage!))
                         : ListView.builder(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/providers/auth_provider.dart';
 
@@ -26,52 +25,48 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.onSurface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.onPrimary),
+        iconTheme: IconThemeData(color: colorScheme.onSurface),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: SvgPicture.asset(
-              'assets/piggy_bank.svg',
-              colorFilter: ColorFilter.mode(
-                colorScheme.tertiary.withOpacity(0.5),
-                BlendMode.srcIn,
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: colorScheme.onPrimary),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: colorScheme.outline),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: colorScheme.primary),
-                        ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/piggy_bank.png',
+                    height: 150,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: colorScheme.onSurface),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.outline),
                       ),
-                      style: TextStyle(color: colorScheme.onPrimary),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        return null;
-                      },
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.primary),
+                      ),
                     ),
+                    style: TextStyle(color: colorScheme.onSurface),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
                     const SizedBox(height: 20),
                     Consumer<AuthProvider>(
                       builder: (context, auth, child) {
@@ -84,7 +79,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             backgroundColor: colorScheme.primary,
                           ),
                           child: Text(
-                            'Send Reset Token',
+                            'Send Reset Link',
                             style: TextStyle(color: colorScheme.onPrimary),
                           ),
                         );
@@ -95,12 +90,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         if (auth.authState == AuthState.resetError) {
                           return Text(
                             auth.errorMessage ?? 'An error occurred',
-                            style: const TextStyle(color: Colors.red),
+                            style: TextStyle(color: colorScheme.error),
                           );
                         } else if (auth.authState == AuthState.resetSuccess) {
-                          return const Text(
+                          return Text(
                             'Password reset token sent to your email',
-                            style: TextStyle(color: Colors.green),
+                            style: TextStyle(color: colorScheme.secondary),
                           );
                         }
                         return Container();
@@ -111,7 +106,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
           ),
-        ],
+        
       ),
     );
   }

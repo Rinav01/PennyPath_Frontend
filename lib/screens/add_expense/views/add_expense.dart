@@ -6,6 +6,7 @@ import 'package:pennypath/models/models.dart' as models;
 import 'package:pennypath/providers/category_provider.dart';
 import 'package:pennypath/providers/expense_provider.dart';
 import 'package:pennypath/screens/add_expense/views/category_creation.dart';
+import 'package:lottie/lottie.dart';
 
 class AddExpense extends StatefulWidget {
   final models.Expense? expense;
@@ -56,8 +57,8 @@ class _AddExpenseState extends State<AddExpense> {
         body: Consumer<CategoryProvider>(
           builder: (context, categoryProvider, child) {
             if (categoryProvider.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: Lottie.asset('assets/Rupee Coin.json'),
               );
             }
             return Padding(
@@ -206,7 +207,7 @@ class _AddExpenseState extends State<AddExpense> {
                           width: double.infinity,
                           height: kToolbarHeight,
                           child: expenseProvider.isLoading
-                              ? const Center(child: CircularProgressIndicator())
+                              ? Center(child: Lottie.asset('assets/Rupee Coin.json'))
                               : TextButton(
                                   onPressed: () {
                                     if (_selectedCategory != null) {

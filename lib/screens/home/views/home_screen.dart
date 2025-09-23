@@ -8,6 +8,7 @@ import 'package:pennypath/screens/stats/stats.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
         if (expenseProvider.isLoading) {
           return Scaffold(
             backgroundColor: colorScheme.surface,
-            body: const Center(
-              child: CircularProgressIndicator(),
+            body: Center(
+              child: Lottie.asset('assets/Rupee Coin.json'),
             ),
           );
         }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 
 Future getCategoryCreation(BuildContext context) {
@@ -155,8 +156,8 @@ Future getCategoryCreation(BuildContext context) {
                       width: double.infinity,
                       height: kToolbarHeight,
                       child: isLoading == true
-                          ? const Center(
-                              child: CircularProgressIndicator(),
+                          ? Center(
+                              child: Lottie.asset('assets/Rupee Coin.json'),
                             )
                           : TextButton(
                               onPressed: () {

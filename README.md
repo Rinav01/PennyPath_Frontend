@@ -17,6 +17,16 @@ This application is perfect for anyone who wants to take control of their financ
 *   **Reports and Charts:** Visualize your financial data with interactive charts and detailed reports. You can see your spending by category, your income vs. expenses, and your progress towards your financial goals.
 *   **Cross-platform:** PennyPath is available for both Android and iOS, so you can use it on all your devices.
 
+## User Experience
+
+### Splash Screen
+
+A beautiful splash screen that welcomes the user to the application. It is implemented using a Lottie animation and is displayed for a few seconds before the main application is loaded.
+
+### Loading Animations
+
+Engaging Lottie animations are displayed while data is being fetched from the backend, improving the user experience. This is implemented in the `main_screen.dart` file, where the `isLoading` flag from the `ExpenseProvider` is used to show or hide the animation. This provides a visual feedback to the user that the application is busy loading data.
+
 ## Getting Started
 
 ### Prerequisites
@@ -50,6 +60,7 @@ This application is perfect for anyone who wants to take control of their financ
 ├── lib
 │   ├── app.dart
 │   ├── app_view.dart
+│   ├── auth_wrapper.dart
 │   ├── main.dart
 │   ├── models
 │   │   └── models.dart
@@ -61,6 +72,7 @@ This application is perfect for anyone who wants to take control of their financ
 │   │   ├── add_expense
 │   │   ├── home
 │   │   ├── login
+│   │   ├── splash_screen.dart
 │   │   └── stats
 │   └── services
 │       └── api_service.dart
@@ -74,12 +86,14 @@ This application is perfect for anyone who wants to take control of their financ
 *   `lib`: Contains the core application code.
     *   `main.dart`: The entry point of the application. It initializes the app and the state management providers.
     *   `app.dart` & `app_view.dart`: The root of the application, which handles the main UI and navigation.
+    *   `auth_wrapper.dart`: A widget that wraps the main application and checks the authentication state of the user.
     *   `models`: Contains the data models for the application, such as `Expense`, `Category`, and `User`.
     *   `providers`: Contains the state management logic for the application using the `provider` package.
         *   `auth_provider.dart`: Manages the user authentication state.
         *   `category_provider.dart`: Manages the categories.
         *   `expense_provider.dart`: Manages the expenses.
     *   `screens`: Contains the different screens of the application, such as the login screen, home screen, and add expense screen.
+        *   `splash_screen.dart`: A splash screen that is displayed when the application is launched.
     *   `services`: Contains the business logic for the application, such as API calls to a backend service.
         *   `api_service.dart`: A service class that handles all the communication with the backend API.
 *   `assets`: Contains the static assets for the application, such as images and fonts.
