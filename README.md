@@ -23,6 +23,10 @@ This application is perfect for anyone who wants to take control of their financ
 
 A beautiful splash screen that welcomes the user to the application. It is implemented using a Lottie animation and is displayed for a few seconds before the main application is loaded.
 
+### Login Experience
+
+A new login experience has been introduced with a "Step Reward" screen. This screen encourages users to log in by presenting a visually appealing interface with a clear call to action. The screen features a top card with an illustration and a "Log in" button that navigates to the actual login page with email and password fields.
+
 ### Loading Animations
 
 Engaging Lottie animations are displayed while data is being fetched from the backend, improving the user experience. This is implemented in the `main_screen.dart` file, where the `isLoading` flag from the `ExpenseProvider` is used to show or hide the animation. This provides a visual feedback to the user that the application is busy loading data.
@@ -110,7 +114,9 @@ The application interacts with a backend service to store and retrieve data. The
 
 ## Screenshots
 
-*(Add screenshots of the application here)*
+**New Login Screen**
+
+*(Add a screenshot of the new login screen here)*
 
 ## Contributing
 
