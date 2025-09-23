@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/providers/auth_provider.dart';
-import 'package:pennypath/app_view.dart';
+import 'package:pennypath/screens/home/views/home_screen.dart';
 import 'package:pennypath/screens/login/login_screen.dart';
 
 class AuthWrapper extends StatelessWidget {
@@ -13,7 +13,7 @@ class AuthWrapper extends StatelessWidget {
     return Consumer<AuthProvider>(
       builder: (context, auth, _) {
         if (auth.authState == AuthState.authenticated) {
-          return const MyAppView();
+          return const HomeScreen();
         } else {
           return const LoginScreen();
         }
