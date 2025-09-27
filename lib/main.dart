@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pennypath/app.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/providers/auth_provider.dart';
@@ -7,6 +8,7 @@ import 'package:pennypath/providers/expense_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(
       providers: [

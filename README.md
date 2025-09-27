@@ -10,7 +10,7 @@ This application is perfect for anyone who wants to take control of their financ
 
 ## Features
 
-*   **User Authentication:** Securely sign up, log in, and reset your password. Your financial data is protected and only accessible to you.
+*   **User Authentication:** Securely sign up, log in, and recover your password if you forget it. Your financial data is protected and only accessible to you.
 *   **Expense and Income Tracking:** Quickly add new transactions, including the amount, date, category, and a description. You can also mark transactions as an expense or an income.
 *   **Categorization:** Create and manage your own categories for your transactions. You can assign a name and a color to each category to easily identify them.
 *   **Budgeting:** Set monthly budgets for different categories to control your spending and avoid overspending.

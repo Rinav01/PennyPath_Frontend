@@ -2,16 +2,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:pennypath/models/models.dart';
 
 class ApiService {
-  final String _baseUrl = 'http://localhost:3000/api'; // Replace with your API base URL
+  final String _baseUrl = dotenv.env['API_BASE_URL']!;
 
   Future<Map<String, dynamic>> signup(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/signup'),
+        Uri.parse('$_baseUrl/api/auth/signup'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -26,7 +27,7 @@ class ApiService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/login'),
+        Uri.parse('$_baseUrl/api/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -41,7 +42,7 @@ class ApiService {
   Future<Category> createCategory(String name, String icon, String color, String token) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/categories/create'),
+        Uri.parse('$_baseUrl/api/categories/create'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -60,7 +61,7 @@ class ApiService {
   Future<List<Category>> getCategories(String token) async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl/categories/list'),
+        Uri.parse('$_baseUrl/api/categories/list'),
         headers: {'Authorization': 'Bearer $token'},
       );
       final data = _handleResponse(response);
@@ -76,7 +77,7 @@ class ApiService {
       double amount, String date, String categoryId, String token) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/expenses'),
+        Uri.parse('$_baseUrl/api/expenses'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -99,7 +100,7 @@ class ApiService {
   Future<List<Expense>> getExpenses(String token) async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl/expenses'),
+        Uri.parse('$_baseUrl/api/expenses'),
         headers: {'Authorization': 'Bearer $token'},
       );
       final data = _handleResponse(response);
@@ -115,7 +116,7 @@ class ApiService {
       String categoryId, String token) async {
     try {
       final response = await http.put(
-        Uri.parse('$_baseUrl/expenses/$expenseId'),
+        Uri.parse('$_baseUrl/api/expenses/$expenseId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -138,7 +139,7 @@ class ApiService {
   Future<void> deleteExpense(String expenseId, String token) async {
     try {
       final response = await http.delete(
-        Uri.parse('$_baseUrl/expenses/$expenseId'),
+        Uri.parse('$_baseUrl/api/expenses/$expenseId'),
         headers: {'Authorization': 'Bearer $token'},
       );
       _handleResponse(response);
@@ -160,7 +161,7 @@ class ApiService {
   Future<Map<String, dynamic>> forgotPassword(String email) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/forgot-password'),
+        Uri.parse('$_baseUrl/api/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email}),
       );
@@ -175,7 +176,7 @@ class ApiService {
   Future<Map<String, dynamic>> resetPassword(String token, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/auth/reset-password/$token'),
+        Uri.parse('$_baseUrl/api/auth/reset-password/$token'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'password': password}),
       );
