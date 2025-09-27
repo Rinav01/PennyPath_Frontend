@@ -1,10 +1,9 @@
 import 'dart:math';
-
-import 'package:pennypath/providers/category_provider.dart';
-import 'package:pennypath/providers/expense_provider.dart';
-import 'package:pennypath/screens/add_expense/views/add_expense.dart';
-import 'package:pennypath/screens/home/views/main_screen.dart';
-import 'package:pennypath/screens/stats/stats.dart';
+import 'package:pennypath/viewmodels/category/category_viewmodel.dart';
+import 'package:pennypath/viewmodels/expense/expense_viewmodel.dart';
+import 'package:pennypath/views/screens/add_expense/add_expense.dart';
+import 'package:pennypath/views/screens/home/main_screen.dart';
+import 'package:pennypath/views/screens/stats/stats.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ExpenseProvider>(context, listen: false).fetchExpenses();
-      Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
+      Provider.of<ExpenseViewModel>(context, listen: false).fetchExpenses();
+      Provider.of<CategoryViewModel>(context, listen: false).fetchCategories();
     });
   }
 
@@ -33,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Consumer<ExpenseProvider>(
+    return Consumer<ExpenseViewModel>(
       builder: (context, expenseProvider, child) {
         if (expenseProvider.isLoading) {
           return Scaffold(

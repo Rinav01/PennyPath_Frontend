@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pennypath/screens/splash_screen.dart';
+
 import 'package:pennypath/theme.dart';
+import 'package:pennypath/views/screens/splash_screen.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});

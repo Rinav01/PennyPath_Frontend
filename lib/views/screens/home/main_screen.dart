@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:pennypath/providers/auth_provider.dart';
-import 'package:pennypath/providers/expense_provider.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
+import 'package:pennypath/viewmodels/expense/expense_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ExpenseProvider>(context, listen: false).fetchExpenses();
+      Provider.of<ExpenseViewModel>(context, listen: false).fetchExpenses();
     });
   }
 
@@ -28,12 +28,12 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final authProvider = Provider.of<AuthProvider>(context);
-    final expenseProvider = Provider.of<ExpenseProvider>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    final expenseViewModel = Provider.of<ExpenseViewModel>(context);
 
-    final totalBalance = expenseProvider.expenses.fold(0.0, (sum, item) => sum + item.amount);
-    final income = expenseProvider.expenses.where((e) => e.amount > 0).fold(0.0, (sum, item) => sum + item.amount);
-    final expense = expenseProvider.expenses.where((e) => e.amount < 0).fold(0.0, (sum, item) => sum + item.amount);
+    final totalBalance = expenseViewModel.expenses.fold(0.0, (sum, item) => sum + item.amount);
+    final income = expenseViewModel.expenses.where((e) => e.amount > 0).fold(0.0, (sum, item) => sum + item.amount);
+    final expense = expenseViewModel.expenses.where((e) => e.amount < 0).fold(0.0, (sum, item) => sum + item.amount);
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ),
                           Text(
-                            authProvider.userId?.substring(0, 1).toUpperCase() ?? 'U',
+                            authViewModel.userId?.substring(0, 1).toUpperCase() ?? 'U',
                             style: textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onPrimary,
@@ -78,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                           ),
                           Text(
-                            authProvider.userId ?? 'User',
+                            authViewModel.userId ?? 'User',
                             style: textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: colorScheme.onSurface,
@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  authProvider.logout();
+                                  authViewModel.logout();
                                   Navigator.of(context).pop();
                                 },
                                 child: Text('Logout', style: TextStyle(color: colorScheme.primary)),
@@ -272,14 +272,14 @@ class _MainScreenState extends State<MainScreen> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: expenseProvider.isLoading
+                child: expenseViewModel.isLoading
                     ? Center(child: Lottie.asset('assets/Rupee Coin.json'))
-                    : expenseProvider.errorMessage != null
-                        ? Center(child: Text(expenseProvider.errorMessage!))
+                    : expenseViewModel.errorMessage != null
+                        ? Center(child: Text(expenseViewModel.errorMessage!))
                         : ListView.builder(
-                            itemCount: expenseProvider.expenses.length,
+                            itemCount: expenseViewModel.expenses.length,
                             itemBuilder: (context, int i) {
-                              final expense = expenseProvider.expenses[i];
+                              final expense = expenseViewModel.expenses[i];
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 16.0),
                                 child: Container(

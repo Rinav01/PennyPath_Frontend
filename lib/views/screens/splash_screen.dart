@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pennypath/screens/login/login.dart';
+import 'package:pennypath/views/screens/login/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

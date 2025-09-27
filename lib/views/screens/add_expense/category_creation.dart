@@ -1,4 +1,4 @@
-import 'package:pennypath/providers/category_provider.dart';
+import 'package:pennypath/viewmodels/category/category_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -164,7 +164,7 @@ Future getCategoryCreation(BuildContext context) {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                Provider.of<CategoryProvider>(context, listen: false)
+                                Provider.of<CategoryViewModel>(context, listen: false)
                                     .createCategory(categoryNameController.text, iconSelected, categoryColor.value.toString())
                                     .then((_) {
                                   Navigator.pop(ctx);

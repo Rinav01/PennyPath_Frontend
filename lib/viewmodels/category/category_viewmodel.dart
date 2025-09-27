@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:pennypath/models/models.dart';
 import 'package:pennypath/services/api_service.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
 
-import 'auth_provider.dart';
-
-class CategoryProvider with ChangeNotifier {
+class CategoryViewModel with ChangeNotifier {
   final ApiService _apiService = ApiService();
-  final AuthProvider _authProvider;
+  final AuthViewModel _authViewModel;
 
-  CategoryProvider(this._authProvider);
+  CategoryViewModel(this._authViewModel);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -21,14 +20,14 @@ class CategoryProvider with ChangeNotifier {
   List<Category> get categories => _categories;
 
   Future<void> fetchCategories() async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      _categories = await _apiService.getCategories(_authProvider.token!);
+      _categories = await _apiService.getCategories(_authViewModel.token!);
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
@@ -38,14 +37,14 @@ class CategoryProvider with ChangeNotifier {
   }
 
   Future<void> createCategory(String name, String icon, String color) async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final newCategory = await _apiService.createCategory(name, icon, color, _authProvider.token!);
+      final newCategory = await _apiService.createCategory(name, icon, color, _authViewModel.token!);
       _categories.insert(0, newCategory);
     } catch (e) {
       _errorMessage = e.toString();

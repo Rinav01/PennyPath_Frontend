@@ -1,16 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:pennypath/models/auth_state.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
+import 'package:pennypath/views/screens/home/home_screen.dart';
+import 'package:pennypath/views/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:pennypath/providers/auth_provider.dart';
-import 'package:pennypath/screens/home/views/home_screen.dart';
-import 'package:pennypath/screens/login/login_screen.dart';
+
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthViewModel>(
       builder: (context, auth, _) {
         if (auth.authState == AuthState.authenticated) {
           return const HomeScreen();

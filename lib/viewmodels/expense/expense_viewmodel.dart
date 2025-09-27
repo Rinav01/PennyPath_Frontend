@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:pennypath/models/models.dart';
 import 'package:pennypath/services/api_service.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
 
-import 'auth_provider.dart';
-
-class ExpenseProvider with ChangeNotifier {
+class ExpenseViewModel with ChangeNotifier {
   final ApiService _apiService = ApiService();
-  final AuthProvider _authProvider;
+  final AuthViewModel _authViewModel;
 
-  ExpenseProvider(this._authProvider);
+  ExpenseViewModel(this._authViewModel);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -21,14 +20,14 @@ class ExpenseProvider with ChangeNotifier {
   List<Expense> get expenses => _expenses;
 
   Future<void> fetchExpenses() async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      _expenses = await _apiService.getExpenses(_authProvider.token!);
+      _expenses = await _apiService.getExpenses(_authViewModel.token!);
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
@@ -38,14 +37,14 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   Future<void> createExpense(double amount, String date, String categoryId) async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final newExpense = await _apiService.createExpense(amount, date, categoryId, _authProvider.token!);
+      final newExpense = await _apiService.createExpense(amount, date, categoryId, _authViewModel.token!);
       _expenses.insert(0, newExpense);
     } catch (e) {
       _errorMessage = e.toString();
@@ -56,14 +55,14 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   Future<void> updateExpense(String expenseId, double amount, String date, String categoryId) async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final updatedExpense = await _apiService.updateExpense(expenseId, amount, date, categoryId, _authProvider.token!);
+      final updatedExpense = await _apiService.updateExpense(expenseId, amount, date, categoryId, _authViewModel.token!);
       final index = _expenses.indexWhere((exp) => exp.id == expenseId);
       if (index != -1) {
         _expenses[index] = updatedExpense;
@@ -77,18 +76,19 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   Future<void> deleteExpense(String expenseId) async {
-    if (_authProvider.token == null) return;
+    if (_authViewModel.token == null) return;
 
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      await _apiService.deleteExpense(expenseId, _authProvider.token!);
+      await _apiService.deleteExpense(expenseId, _authViewModel.token!);
       _expenses.removeWhere((exp) => exp.id == expenseId);
     } catch (e) {
       _errorMessage = e.toString();
-    } finally {
+    }
+    finally {
       _isLoading = false;
       notifyListeners();
     }

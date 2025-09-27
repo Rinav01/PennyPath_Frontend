@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pennypath/providers/auth_provider.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -15,7 +15,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                authProvider.forgotPassword(_emailController.text);
+                authViewModel.forgotPassword(_emailController.text);
               },
               child: const Text('Send Reset Link'),
             ),

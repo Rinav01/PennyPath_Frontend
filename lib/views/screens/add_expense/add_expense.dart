@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:pennypath/viewmodels/category/category_viewmodel.dart';
+import 'package:pennypath/viewmodels/expense/expense_viewmodel.dart';
+import 'package:pennypath/views/screens/add_expense/category_creation.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/models/models.dart' as models;
-import 'package:pennypath/providers/category_provider.dart';
-import 'package:pennypath/providers/expense_provider.dart';
-import 'package:pennypath/screens/add_expense/views/category_creation.dart';
+
 import 'package:lottie/lottie.dart';
 
 class AddExpense extends StatefulWidget {
@@ -54,7 +55,8 @@ class _AddExpenseState extends State<AddExpense> {
         appBar: AppBar(
           backgroundColor: colorScheme.surface,
         ),
-        body: Consumer<CategoryProvider>(
+        body: Consumer<CategoryViewModel>(
+          
           builder: (context, categoryProvider, child) {
             if (categoryProvider.isLoading) {
               return Center(
@@ -201,12 +203,12 @@ class _AddExpenseState extends State<AddExpense> {
                     const SizedBox(
                       height: 32,
                     ),
-                    Consumer<ExpenseProvider>(
-                      builder: (context, expenseProvider, child) {
+                    Consumer<ExpenseViewModel>(
+                      builder: (context, expenseViewModel, child) {
                         return SizedBox(
                           width: double.infinity,
                           height: kToolbarHeight,
-                          child: expenseProvider.isLoading
+                          child: expenseViewModel.isLoading
                               ? Center(child: Lottie.asset('assets/Rupee Coin.json'))
                               : TextButton(
                                   onPressed: () {
@@ -214,11 +216,11 @@ class _AddExpenseState extends State<AddExpense> {
                                       final amount = double.parse(_expenseController.text);
                                       final date = DateFormat('yyyy-MM-dd').format(_selectedDate);
                                       if (widget.expense == null) {
-                                        expenseProvider.createExpense(amount, date, _selectedCategory!.id).then((_) {
+                                        expenseViewModel.createExpense(amount, date, _selectedCategory!.id).then((_) {
                                           Navigator.pop(context);
                                         });
                                       } else {
-                                        expenseProvider.updateExpense(widget.expense!.id, amount, date, _selectedCategory!.id).then((_) {
+                                        expenseViewModel.updateExpense(widget.expense!.id, amount, date, _selectedCategory!.id).then((_) {
                                           if (!mounted) return;
                                           Navigator.pop(context);
                                         });

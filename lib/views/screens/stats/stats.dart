@@ -1,4 +1,4 @@
-import 'package:pennypath/providers/expense_provider.dart';
+import 'package:pennypath/viewmodels/expense/expense_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +11,8 @@ class StatScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return Consumer<ExpenseProvider>(
-      builder: (context, expenseProvider, child) {
+    return Consumer<ExpenseViewModel>(
+      builder: (context, expenseViewModel, child) {
         return Scaffold(
           backgroundColor: colorScheme.surface,
           body: SafeArea(
@@ -41,7 +41,7 @@ class StatScreen extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(12, 20, 12, 12),
-                      child: MyChart(expenses: expenseProvider.expenses),
+                      child: MyChart(expenses: expenseViewModel.expenses),
                     ),
                   )
                 ],

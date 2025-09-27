@@ -1,11 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pennypath/models/auth_state.dart';
 import 'package:pennypath/services/api_service.dart';
 
-enum AuthState { authenticated, unauthenticated, authenticating, error, requestingReset, resetting, resetSuccess, resetError }
-
-class AuthProvider with ChangeNotifier {
+class AuthViewModel with ChangeNotifier {
   final ApiService _apiService = ApiService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
@@ -19,7 +18,7 @@ class AuthProvider with ChangeNotifier {
   AuthState get authState => _authState;
   String? get errorMessage => _errorMessage;
 
-  AuthProvider() {
+  AuthViewModel() {
     _initAuth();
   }
 

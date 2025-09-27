@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pennypath/models/auth_state.dart';
 import 'package:provider/provider.dart';
-import 'package:pennypath/providers/auth_provider.dart';
-import 'package:pennypath/screens/login/forgot_password_screen.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
+import 'package:pennypath/views/screens/login/forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,11 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
       if (_isLogin) {
-        authProvider.login(_emailController.text, _passwordController.text);
+        authViewModel.login(_emailController.text, _passwordController.text);
       } else {
-        authProvider.signup(_emailController.text, _passwordController.text);
+        authViewModel.signup(_emailController.text, _passwordController.text);
       }
     }
   }
@@ -101,27 +102,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  Consumer<AuthProvider>(
-                    builder: (context, auth, child) {
-                      if (auth.authState == AuthState.authenticating) {
-                        return Lottie.asset(
-                          'assets/loading.json',
-                          width: 100,
-                          height: 100,
-                        );
-                      }
-                      return ElevatedButton(
-                        onPressed: _submit,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: colorScheme.primary,
-                        ),
-                        child: Text(
-                          _isLogin ? 'Sign In' : 'Sign Up',
-                          style: TextStyle(color: colorScheme.onPrimary),
-                        ),
-                      );
-                    },
-                  ),
+Consumer<AuthViewModel>(
+  builder: (context, auth, child) {
+    if (auth.authState == AuthState.authenticating) {
+      return Lottie.asset(
+        'assets/loading.json',
+        width: 100,
+        height: 100,
+      );
+    }
+    return ElevatedButton(
+      onPressed: _submit,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colorScheme.primary,
+      ),
+      child: Text(
+        _isLogin ? 'Sign In' : 'Sign Up',
+        style: TextStyle(color: colorScheme.onPrimary),
+      ),
+    );
+  },
+),
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: colorScheme.onSurface),
                     ),
                   ),
-                  Consumer<AuthProvider>(
+                  Consumer<AuthViewModel>(
                     builder: (context, auth, child) {
                       if (auth.authState == AuthState.error) {
                         return Text(

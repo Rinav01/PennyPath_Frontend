@@ -1,0 +1,1 @@
+enum AuthState { authenticated, unauthenticated, authenticating, error, requestingReset, resetting, resetSuccess, resetError }
