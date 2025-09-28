@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pennypath/views/screens/login/login_screen.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -94,7 +95,12 @@ class Login extends StatelessWidget {
                       ),
                       elevation: 0,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
+                    },
                     child: const Text(
                       "Log in",
                       style: TextStyle(

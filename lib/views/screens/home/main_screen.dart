@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ),
                           Text(
-                            authViewModel.userId?.substring(0, 1).toUpperCase() ?? 'U',
+                            authViewModel.name?.substring(0, 1).toUpperCase() ?? 'U',
                             style: textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onPrimary,
@@ -78,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                           ),
                           Text(
-                            authViewModel.userId ?? 'User',
+                            authViewModel.name ?? 'User',
                             style: textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: colorScheme.onSurface,

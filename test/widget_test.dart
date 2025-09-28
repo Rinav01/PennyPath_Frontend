@@ -8,23 +8,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pennypath/app.dart';
-
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
+import 'package:pennypath/viewmodels/category/category_viewmodel.dart';
+import 'package:pennypath/viewmodels/expense/expense_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Renders LoginScreen when not authenticated', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthViewModel()),
+          ChangeNotifierProxyProvider<AuthViewModel, CategoryViewModel>(
+            create: (context) => CategoryViewModel(context.read<AuthViewModel>()),
+            update: (context, auth, previous) => CategoryViewModel(auth),
+          ),
+          ChangeNotifierProxyProvider<AuthViewModel, ExpenseViewModel>(
+            create: (context) => ExpenseViewModel(context.read<AuthViewModel>()),
+            update: (context, auth, previous) => ExpenseViewModel(auth),
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // The first frame is a loading indicator.
+    await tester.pumpAndSettle();
+    await tester.pump(Duration.zero);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the login screen is rendered.
+    expect(find.text('Welcome to PennyPath'), findsOneWidget);
   });
 }

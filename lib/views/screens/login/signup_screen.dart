@@ -4,33 +4,25 @@ import 'package:pennypath/models/auth_state.dart';
 import 'package:provider/provider.dart';
 import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
 import 'package:pennypath/views/screens/login/forgot_password_screen.dart';
+import 'package:pennypath/views/screens/login/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLogin = true;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
       final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-      if (_isLogin) {
-        authViewModel.login(_emailController.text, _passwordController.text);
-      } else {
-        authViewModel.signup(
-          _nameController.text,
-          _emailController.text,
-          _passwordController.text,
-        );
-      }
+      authViewModel.signup(_nameController.text, _emailController.text, _passwordController.text);
     }
   }
 
@@ -60,30 +52,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (!_isLogin)
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                        labelStyle: TextStyle(color: colorScheme.onSurface),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: colorScheme.outline),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: colorScheme.primary),
-                        ),
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: colorScheme.onSurface),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.outline),
                       ),
-                      style: TextStyle(color: colorScheme.onSurface),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: colorScheme.primary),
+                      ),
                     ),
-                  if (!_isLogin) const SizedBox(height: 20),
+                    style: TextStyle(color: colorScheme.onSurface),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -146,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: colorScheme.primary,
                         ),
                         child: Text(
-                          _isLogin ? 'Sign In' : 'Sign Up',
+                          'Sign Up',
                           style: TextStyle(color: colorScheme.onPrimary),
                         ),
                       );
@@ -154,14 +145,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
                     },
                     child: Text(
-                      _isLogin
-                          ? 'Create an account'
-                          : 'I already have an account',
+                      'I already have an account',
                       style: TextStyle(color: colorScheme.onSurface),
                     ),
                   ),

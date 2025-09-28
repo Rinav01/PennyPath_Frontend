@@ -4,17 +4,19 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:pennypath/models/models.dart';
 
 class ApiService {
   final String _baseUrl = dotenv.env['API_BASE_URL']!;
+  final http.Client _client = IOClient();
 
-  Future<Map<String, dynamic>> signup(String email, String password) async {
+  Future<Map<String, dynamic>> signup(String name, String email, String password) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/auth/signup'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
+        body: jsonEncode({'name': name, 'email': email, 'password': password}),
       );
       return _handleResponse(response);
     } on SocketException {
@@ -26,7 +28,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
@@ -41,7 +43,7 @@ class ApiService {
 
   Future<Category> createCategory(String name, String icon, String color, String token) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/categories/create'),
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +62,7 @@ class ApiService {
 
   Future<List<Category>> getCategories(String token) async {
     try {
-      final response = await http.get(
+      final response = await _client.get(
         Uri.parse('$_baseUrl/api/categories/list'),
         headers: {'Authorization': 'Bearer $token'},
       );
@@ -76,7 +78,7 @@ class ApiService {
   Future<Expense> createExpense(
       double amount, String date, String categoryId, String token) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/expenses'),
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +101,7 @@ class ApiService {
 
   Future<List<Expense>> getExpenses(String token) async {
     try {
-      final response = await http.get(
+      final response = await _client.get(
         Uri.parse('$_baseUrl/api/expenses'),
         headers: {'Authorization': 'Bearer $token'},
       );
@@ -115,7 +117,7 @@ class ApiService {
   Future<Expense> updateExpense(String expenseId, double amount, String date,
       String categoryId, String token) async {
     try {
-      final response = await http.put(
+      final response = await _client.put(
         Uri.parse('$_baseUrl/api/expenses/$expenseId'),
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +140,7 @@ class ApiService {
 
   Future<void> deleteExpense(String expenseId, String token) async {
     try {
-      final response = await http.delete(
+      final response = await _client.delete(
         Uri.parse('$_baseUrl/api/expenses/$expenseId'),
         headers: {'Authorization': 'Bearer $token'},
       );
@@ -160,7 +162,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> forgotPassword(String email) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email}),
@@ -175,7 +177,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> resetPassword(String token, String password) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('$_baseUrl/api/auth/reset-password/$token'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'password': password}),

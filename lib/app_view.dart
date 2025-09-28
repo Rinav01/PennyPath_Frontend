@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:pennypath/auth_wrapper.dart';
 import 'package:pennypath/theme.dart';
-import 'package:pennypath/views/screens/splash_screen.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
@@ -14,7 +14,7 @@ class MyAppView extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: const SplashScreen(),
+      home: const AuthWrapper(),
     );
   }
 }

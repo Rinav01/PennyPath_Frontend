@@ -47,28 +47,31 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBar: BottomAppBar(
             shape: const CircularNotchedRectangle(),
             notchMargin: 8.0,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              child: BottomNavigationBar(
-                onTap: (value) {
-                  setState(() {
-                    index = value;
-                  });
-                },
-                backgroundColor: colorScheme.surface,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                elevation: 0,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.home,
-                          color: index == 0 ? colorScheme.primary : colorScheme.onSurface),
-                      label: 'Home'),
-                  BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.graph_square_fill,
-                          color: index == 1 ? colorScheme.primary : colorScheme.onSurface),
-                      label: 'Stats'),
-                ],
+            child: SizedBox(
+              height: kBottomNavigationBarHeight,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                child: BottomNavigationBar(
+                  onTap: (value) {
+                    setState(() {
+                      index = value;
+                    });
+                  },
+                  backgroundColor: colorScheme.surface,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  elevation: 0,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.home,
+                            color: index == 0 ? colorScheme.primary : colorScheme.onSurface),
+                        label: 'Home'),
+                    BottomNavigationBarItem(
+                        icon: Icon(CupertinoIcons.graph_square_fill,
+                            color: index == 1 ? colorScheme.primary : colorScheme.onSurface),
+                        label: 'Stats'),
+                  ],
+                ),
               ),
             ),
           ),

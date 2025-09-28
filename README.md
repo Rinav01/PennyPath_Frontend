@@ -23,9 +23,13 @@ This application is perfect for anyone who wants to take control of their financ
 
 A beautiful splash screen that welcomes the user to the application. It is implemented using a Lottie animation and is displayed for a few seconds before the main application is loaded.
 
-### Login Experience
+### Authentication Flow
 
-A new login experience has been introduced with a "Step Reward" screen. This screen encourages users to log in by presenting a visually appealing interface with a clear call to action. The screen features a top card with an illustration and a "Log in" button that navigates to the actual login page with email and password fields.
+A new authentication flow has been introduced. On the first launch of the application, the user is presented with a sign-up screen. On subsequent launches, the user is presented with a login screen. This is handled by the `AuthWrapper` widget, which checks for a `isFirstLaunch` flag in `shared_preferences`.
+
+### First Launch Experience
+
+On the first launch of the application, the user is presented with a sign-up screen. This is to encourage new users to create an account and start using the application. The sign-up screen is similar to the login screen, but with a "Sign Up" button instead of a "Sign In" button. After the user signs up, the `isFirstLaunch` flag is set to `false` in `shared_preferences`, so that on subsequent launches the user is presented with the login screen.
 
 ### Loading Animations
 
@@ -76,6 +80,8 @@ Engaging Lottie animations are displayed while data is being fetched from the ba
 │   │   ├── add_expense
 │   │   ├── home
 │   │   ├── login
+│   │   │   ├── login_screen.dart
+│   │   │   └── signup_screen.dart
 │   │   ├── splash_screen.dart
 │   │   └── stats
 │   └── services
