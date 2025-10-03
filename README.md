@@ -70,22 +70,28 @@ Engaging Lottie animations are displayed while data is being fetched from the ba
 │   ├── app_view.dart
 │   ├── auth_wrapper.dart
 │   ├── main.dart
+│   ├── theme.dart
 │   ├── models
+│   │   ├── auth_state.dart
 │   │   └── models.dart
-│   ├── providers
-│   │   ├── auth_provider.dart
-│   │   ├── category_provider.dart
-│   │   └── expense_provider.dart
-│   ├── screens
-│   │   ├── add_expense
-│   │   ├── home
-│   │   ├── login
-│   │   │   ├── login_screen.dart
-│   │   │   └── signup_screen.dart
-│   │   ├── splash_screen.dart
-│   │   └── stats
-│   └── services
-│       └── api_service.dart
+│   ├── services
+│   │   └── api_service.dart
+│   ├── viewmodels
+│   │   ├── auth
+│   │   │   └── auth_viewmodel.dart
+│   │   ├── category
+│   │   │   └── category_viewmodel.dart
+│   │   ├── expense
+│   │   │   └── expense_viewmodel.dart
+│   │   └── loading_viewmodel.dart
+│   └── views
+│       └── screens
+│           ├── add_expense
+│           ├── home
+│           ├── loader_screen.dart
+│           ├── login
+│           ├── splash_screen.dart
+│           └── stats
 ├── linux
 ├── macos
 ├── test
