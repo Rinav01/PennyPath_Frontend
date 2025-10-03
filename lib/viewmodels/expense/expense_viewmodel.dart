@@ -4,11 +4,14 @@ import 'package:pennypath/models/models.dart';
 import 'package:pennypath/services/api_service.dart';
 import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
 
+import 'package:pennypath/viewmodels/loading_viewmodel.dart';
+
 class ExpenseViewModel with ChangeNotifier {
   final ApiService _apiService = ApiService();
   final AuthViewModel _authViewModel;
+  final LoadingViewModel _loadingViewModel;
 
-  ExpenseViewModel(this._authViewModel);
+  ExpenseViewModel(this._authViewModel, this._loadingViewModel);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -22,6 +25,7 @@ class ExpenseViewModel with ChangeNotifier {
   Future<void> fetchExpenses() async {
     if (_authViewModel.token == null) return;
 
+    _loadingViewModel.startLoading();
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -32,13 +36,15 @@ class ExpenseViewModel with ChangeNotifier {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;
-      notifyListeners();
+      _loadingViewModel.stopLoading();
     }
+    notifyListeners();
   }
 
   Future<void> createExpense(double amount, String date, String categoryId) async {
     if (_authViewModel.token == null) return;
 
+    _loadingViewModel.startLoading();
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -50,13 +56,15 @@ class ExpenseViewModel with ChangeNotifier {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;
-      notifyListeners();
+      _loadingViewModel.stopLoading();
     }
+    notifyListeners();
   }
 
   Future<void> updateExpense(String expenseId, double amount, String date, String categoryId) async {
     if (_authViewModel.token == null) return;
 
+    _loadingViewModel.startLoading();
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -71,13 +79,15 @@ class ExpenseViewModel with ChangeNotifier {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;
-      notifyListeners();
+      _loadingViewModel.stopLoading();
     }
+    notifyListeners();
   }
 
   Future<void> deleteExpense(String expenseId) async {
     if (_authViewModel.token == null) return;
 
+    _loadingViewModel.startLoading();
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -90,7 +100,8 @@ class ExpenseViewModel with ChangeNotifier {
     }
     finally {
       _isLoading = false;
-      notifyListeners();
+      _loadingViewModel.stopLoading();
     }
+    notifyListeners();
   }
 }

@@ -1,1 +1,1 @@
-enum AuthState { authenticated, unauthenticated, authenticating, error, requestingReset, resetting, resetSuccess, resetError }
+enum AuthState { checkingFirstLaunch, authenticated, unauthenticated, authenticating, error, requestingReset, resetting, resetSuccess, resetError }

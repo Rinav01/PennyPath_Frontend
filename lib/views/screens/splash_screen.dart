@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pennypath/views/screens/login/login.dart';
+import 'package:pennypath/auth_wrapper.dart';
+import 'package:pennypath/viewmodels/auth/auth_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,58 +22,51 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    print("SplashScreen initState");
 
     WidgetsBinding.instance.addObserver(this);
 
     _lottieController = AnimationController(vsync: this);
-    print("Lottie controller created");
 
     _textAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2450),
     );
-    print("Text animation controller created");
 
     _textOpacityAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(_textAnimationController);
 
     _lottieController.addStatusListener((status) {
-      print("Lottie animation status: $status");
       if (status == AnimationStatus.completed) {
         _textAnimationController.forward();
       }
     });
 
     _textAnimationController.addStatusListener((status) {
-      print("Text animation status: $status");
       if (status == AnimationStatus.completed) {
-        print("Text animation completed, navigating...");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Login()),
-        );
+        Provider.of<AuthViewModel>(context, listen: false).initAuth().then((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthWrapper()),
+          );
+        });
       }
     });
   }
 
   void _startLottieAnimation() {
   if (_isLottieLoaded) {
-    print("Starting Lottie animation with 1 second delay");
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       _lottieController
         ..reset()
         ..forward();
     });
   } else {
-    print("Trying to start Lottie animation but not loaded yet");
   }
 }
 
 
   @override
   void dispose() {
-    print("SplashScreen dispose");
     WidgetsBinding.instance.removeObserver(this);
     _lottieController.dispose();
     _textAnimationController.dispose();
@@ -80,18 +75,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("App lifecycle state changed: $state");
     if (state == AppLifecycleState.resumed) {
-      print("App resumed - restarting animations");
       _startLottieAnimation();
       _textAnimationController.reset();
-    }
+    } 
     super.didChangeAppLifecycleState(state);
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Building SplashScreen widget");
     return Scaffold(
       backgroundColor: const Color(0xFFE6FFFA),
       body: Center(
@@ -102,7 +94,6 @@ class _SplashScreenState extends State<SplashScreen>
               'assets/Money.json',
               controller: _lottieController,
               onLoaded: (composition) {
-                print("Lottie composition loaded with duration: ${composition.duration}");
                 _lottieController.duration = composition.duration;
                 _isLottieLoaded = true;
                 _startLottieAnimation();

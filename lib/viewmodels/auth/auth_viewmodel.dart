@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pennypath/models/auth_state.dart';
 import 'package:pennypath/services/api_service.dart';
+import 'package:pennypath/viewmodels/loading_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthViewModel with ChangeNotifier {
   final ApiService _apiService = ApiService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final LoadingViewModel _loadingViewModel;
 
   String? _token;
   String? _userId;
   String? _name;
-  AuthState _authState = AuthState.unauthenticated;
+  AuthState _authState = AuthState.checkingFirstLaunch;
   String? _errorMessage;
 
   String? get token => _token;
@@ -20,23 +22,31 @@ class AuthViewModel with ChangeNotifier {
   AuthState get authState => _authState;
   String? get errorMessage => _errorMessage;
 
-  AuthViewModel() {
-    _initAuth();
-  }
+  AuthViewModel(this._loadingViewModel);
 
-  Future<void> _initAuth() async {
-    _token = await _secureStorage.read(key: 'token');
-    _userId = await _secureStorage.read(key: 'userId');
-    _name = await _secureStorage.read(key: 'name');
-    if (_token != null && _userId != null) {
-      _authState = AuthState.authenticated;
-    } else {
+  Future<void> initAuth() async {
+    _loadingViewModel.startLoading();
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+
+    if (isFirstLaunch) {
       _authState = AuthState.unauthenticated;
+    } else {
+      _token = await _secureStorage.read(key: 'token');
+      _userId = await _secureStorage.read(key: 'userId');
+      _name = await _secureStorage.read(key: 'name');
+      if (_token != null && _userId != null) {
+        _authState = AuthState.authenticated;
+      } else {
+        _authState = AuthState.unauthenticated;
+      }
     }
+    _loadingViewModel.stopLoading();
     notifyListeners();
   }
 
   Future<void> login(String email, String password) async {
+    _loadingViewModel.startLoading();
     _authState = AuthState.authenticating;
     _errorMessage = null;
     notifyListeners();
@@ -54,11 +64,13 @@ class AuthViewModel with ChangeNotifier {
       _authState = AuthState.error;
       _errorMessage = e.toString();
     } finally {
+      _loadingViewModel.stopLoading();
       notifyListeners();
     }
   }
 
   Future<void> signup(String name, String email, String password) async {
+    _loadingViewModel.startLoading();
     _authState = AuthState.authenticating;
     _errorMessage = null;
     notifyListeners();
@@ -73,11 +85,13 @@ class AuthViewModel with ChangeNotifier {
       _authState = AuthState.error;
       _errorMessage = e.toString();
     } finally {
+      _loadingViewModel.stopLoading();
       notifyListeners();
     }
   }
 
   Future<void> forgotPassword(String email) async {
+    _loadingViewModel.startLoading();
     _authState = AuthState.requestingReset;
     _errorMessage = null;
     notifyListeners();
@@ -89,11 +103,13 @@ class AuthViewModel with ChangeNotifier {
       _authState = AuthState.resetError;
       _errorMessage = e.toString();
     } finally {
+      _loadingViewModel.stopLoading();
       notifyListeners();
     }
   }
 
   Future<void> resetPassword(String token, String password) async {
+    _loadingViewModel.startLoading();
     _authState = AuthState.resetting;
     _errorMessage = null;
     notifyListeners();
@@ -105,6 +121,7 @@ class AuthViewModel with ChangeNotifier {
       _authState = AuthState.resetError;
       _errorMessage = e.toString();
     } finally {
+      _loadingViewModel.stopLoading();
       notifyListeners();
     }
   }
